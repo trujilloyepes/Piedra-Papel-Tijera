@@ -1,0 +1,7 @@
+target/
+.idea/
+*.iml
+.DS_Store
+
+# Datos reales de cada uno (los de ejemplo irán en data/datos-ejemplo)
+data/*.xml

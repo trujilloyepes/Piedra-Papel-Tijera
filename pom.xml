@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.streetfighter</groupId>
-    <artifactId>StreetFighterRPS</artifactId>
+    <artifactId>PiedraPapelTijera</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>StreetFighterRPS</name>
+    <name>PiedraPapelTijera</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
