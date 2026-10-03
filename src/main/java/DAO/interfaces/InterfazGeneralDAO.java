@@ -1,4 +1,4 @@
-package controllers.interfaces;
+package DAO.interfaces;
 
 public class InterfazGeneralDAO {
 }
