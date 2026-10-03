@@ -7,7 +7,6 @@ Videojuego de escritorio desarrollado en **Java** con persistencia de datos en *
 - Iván Berral
 - Daniel Ruiz
 - José Trujillo
-- Antonio Jesús Luque
 - José Antonio Castillero
 
 ## Enfoque del proyecto
