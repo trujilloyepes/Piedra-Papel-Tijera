@@ -26,6 +26,10 @@ public enum Movimiento {
         || (this == PAPEL && otro == PIEDRA) || (this == TIJERA && otro == PAPEL));
     }
 
+    public String getGolpe() {
+        return golpe;
+    }
+
     @Override
     public String toString() {
         return this.nombre + " (" + this.golpe + ")";
