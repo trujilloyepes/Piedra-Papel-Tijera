@@ -203,20 +203,34 @@ public class ConsoleView {
     /** Anuncia el comienzo de una ronda */
     public void mostrarRonda(int ronda) {
         System.out.println();
-        System.out.println("*** ROUND " + ronda + " - FIGHT! ***");
+        System.out.println("*********************************************");
+        System.out.println("            ROUND " + ronda + "  -  ¡FIGHT!");
+        System.out.println("*********************************************");
     }
 
-    /** Muestra las barras de vida de los dos luchadores */
+    /** Muestra el marcador: barras de vida y rondas ganadas */
     public void mostrarEstado(Partida p) {
+        String jugador = p.getLuchadorJugador().getNombre();
+        String cpu = p.getLuchadorCpu().getNombre();
+
         System.out.println();
-        System.out.printf("%-10s %s %3d%n", p.getLuchadorJugador().getNombre(), barra(p.getVidaJugador()), p.getVidaJugador());
-        System.out.printf("%-10s %s %3d%n", p.getLuchadorCpu().getNombre(), barra(p.getVidaCpu()), p.getVidaCpu());
+        System.out.println("---------------------------------------------");
+        System.out.println(" " + rellenar(jugador, 10) + " " + barra(p.getVidaJugador())
+                + " " + p.getVidaJugador() + " / " + Partida.VIDA_MAXIMA);
+        System.out.println(" " + rellenar(cpu, 10) + " " + barra(p.getVidaCpu())
+                + " " + p.getVidaCpu() + " / " + Partida.VIDA_MAXIMA);
+        System.out.println("---------------------------------------------");
+        System.out.println(" Rondas ganadas:  " + jugador + " " + p.getRondasJugador()
+                + "  -  " + p.getRondasCpu() + " " + cpu);
     }
 
     /** Pide el ataque del jugador. @return el movimiento elegido */
     public Movimiento pedirMovimiento() {
         System.out.println();
-        System.out.println("1. Piedra (Shoryuken)   2. Papel (Hadouken)   3. Tijera (Tatsumaki)");
+        System.out.println("Elige tu ataque:");
+        System.out.println("  1. Piedra  (Shoryuken)  -> gana a Tijera");
+        System.out.println("  2. Papel   (Hadouken)   -> gana a Piedra");
+        System.out.println("  3. Tijera  (Tatsumaki)  -> gana a Papel");
         return Movimiento.values()[pedirEntero("Tu ataque: ", 1, 3) - 1];
     }
 
@@ -226,28 +240,38 @@ public class ConsoleView {
         String cpu = p.getLuchadorCpu().getNombre();
 
         System.out.println();
-        System.out.println(jugador + " usa " + t.getMovimientoJugador().getGolpe() + "!");
-        System.out.println(cpu + " usa " + t.getMovimientoCpu().getGolpe() + "!");
+        System.out.println(">> " + jugador + " usa " + t.getMovimientoJugador());
+        System.out.println(">> " + cpu + " usa " + t.getMovimientoCpu());
         switch (t.getGanador()) {
-            case JUGADOR -> System.out.println(">> ¡" + jugador + " acierta! -" + t.getDamage() + " a " + cpu);
-            case CPU -> System.out.println(">> ¡" + cpu + " acierta! -" + t.getDamage() + " a " + jugador);
-            case EMPATE -> System.out.println(">> ¡Los ataques chocan! Ambos pierden " + t.getDamage());
+            case JUGADOR -> System.out.println("   ¡" + jugador + " acierta! -" + t.getDamage() + " de vida para " + cpu);
+            case CPU -> System.out.println("   ¡" + cpu + " acierta! -" + t.getDamage() + " de vida para " + jugador);
+            case EMPATE -> System.out.println("   ¡Los ataques chocan! Ambos pierden " + t.getDamage() + " de vida");
         }
     }
 
     /** Muestra el K.O. y quién gana la ronda */
     public void mostrarFinRonda(int ronda, Ganador ganador, boolean perfect, Partida p) {
         System.out.println();
-        System.out.println("*** K.O. ***");
+        System.out.println("#############################################");
+        System.out.println("                    K.O.!");
         switch (ganador) {
-            case JUGADOR -> System.out.println(p.getLuchadorJugador().getNombre() + " gana el round " + ronda);
-            case CPU -> System.out.println(p.getLuchadorCpu().getNombre() + " gana el round " + ronda);
-            case EMPATE -> System.out.println("DOUBLE K.O. - Draw game (esta ronda no cuenta)");
+            case JUGADOR -> System.out.println("   " + p.getLuchadorJugador().getNombre() + " gana el round " + ronda);
+            case CPU -> System.out.println("   " + p.getLuchadorCpu().getNombre() + " gana el round " + ronda);
+            case EMPATE -> System.out.println("   DOUBLE K.O. - Draw game (esta ronda no cuenta)");
         }
         if (perfect && ganador != Ganador.EMPATE) {
-            System.out.println("*** PERFECT! ***");
+            System.out.println("                *** PERFECT! ***");
         }
-        System.out.println("Marcador: " + p.getRondasJugador() + " - " + p.getRondasCpu());
+        System.out.println("   Marcador: " + p.getRondasJugador() + " - " + p.getRondasCpu());
+        System.out.println("#############################################");
+    }
+
+    /** Anuncia el enfrentamiento antes de empezar */
+    public void mostrarVersus(String nombreJugador, String nombreCpu) {
+        System.out.println();
+        System.out.println("=============================================");
+        System.out.println("        " + nombreJugador.toUpperCase() + "   VS   " + nombreCpu.toUpperCase());
+        System.out.println("=============================================");
     }
 
     /** Muestra el resultado final del combate */

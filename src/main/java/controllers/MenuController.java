@@ -269,7 +269,7 @@ import java.util.Random;
             return;
         }
 
-        view.mostrarMensaje("\n" + luchador.getNombre() + "   VS   " + rival.getNombre());
+        view.mostrarVersus(luchador.getNombre(), rival.getNombre());
 
         // Bucle de rondas: se repite hasta que alguien gana el combate
         while (!combateController.combateTerminado(partida)) {
@@ -287,6 +287,7 @@ import java.util.Random;
             int ronda = partida.getRondaActual();
             Ganador ganador = combateController.cerrarRonda(partida);
             view.mostrarFinRonda(ronda, ganador, partida.isUltimaRondaPerfect(), partida);
+            view.esperarEnter();
 
             if (!combateController.combateTerminado(partida)) {
                 combateController.siguienteRonda(partida);
