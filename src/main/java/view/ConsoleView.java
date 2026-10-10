@@ -4,6 +4,7 @@ import model.Jugador;
 import model.Luchador;
 import model.Partida;
 import model.Turno;
+import model.Combate;
 import model.enums.Ganador;
 import model.enums.Movimiento;
 
@@ -284,6 +285,87 @@ public class ConsoleView {
             System.out.println("  " + p.getLuchadorCpu().getNombre() + " WINS!  Has perdido... ¡revancha!");
         }
         System.out.println("=============================================");
+    }
+
+    // ---------- Historial ----------
+
+    /** Muestra los combates en forma de tabla, del más reciente al más antiguo */
+    public void mostrarHistorial(List<Combate> combates, List<Jugador> jugadores, List<Luchador> luchadores) {
+        String linea = "+-----+------------------+--------------+------------+------------+----------+-----------+";
+
+        System.out.println();
+        System.out.println("HISTORIAL DE COMBATES");
+        System.out.println(linea);
+        System.out.println("| " + rellenar("ID", 3) + " | " + rellenar("FECHA", 16) + " | " + rellenar("JUGADOR", 12)
+                + " | " + rellenar("LUCHADOR", 10) + " | " + rellenar("RIVAL", 10)
+                + " | " + rellenar("MARCADOR", 8) + " | " + rellenar("RESULTADO", 9) + " |");
+        System.out.println(linea);
+
+        // Los ids van en orden de creación, así que recorremos la lista al revés
+        for (int i = combates.size() - 1; i >= 0; i--) {
+            Combate c = combates.get(i);
+            System.out.println("| " + rellenar(String.valueOf(c.getIdCombate()), 3)
+                    + " | " + rellenar(formatearFecha(c.getFecha()), 16)
+                    + " | " + rellenar(nombreJugador(c.getIdJugador(), jugadores), 12)
+                    + " | " + rellenar(nombreLuchador(c.getIdLuchadorJugador(), luchadores), 10)
+                    + " | " + rellenar(nombreLuchador(c.getIdLuchadorCpu(), luchadores), 10)
+                    + " | " + rellenar(c.getRondasJugador() + " - " + c.getRondasCpu(), 8)
+                    + " | " + rellenar(c.getResultado().toString(), 9) + " |");
+        }
+        System.out.println(linea);
+    }
+
+    /** Muestra el detalle de un combate: sus turnos agrupados por ronda */
+    public void mostrarDetalleCombate(Combate c, List<Jugador> jugadores, List<Luchador> luchadores) {
+        String jugador = nombreJugador(c.getIdJugador(), jugadores);
+        String luchador = nombreLuchador(c.getIdLuchadorJugador(), luchadores);
+        String rival = nombreLuchador(c.getIdLuchadorCpu(), luchadores);
+
+        System.out.println();
+        System.out.println("=============================================");
+        System.out.println(" COMBATE " + c.getIdCombate() + "  -  " + formatearFecha(c.getFecha()));
+        System.out.println(" " + jugador + " (" + luchador + ")  VS  CPU (" + rival + ")");
+        System.out.println(" Resultado: " + c.getResultado() + "  (" + c.getRondasJugador() + " - " + c.getRondasCpu() + ")");
+        System.out.println("=============================================");
+
+        int rondaActual = 0;
+        for (Turno t : c.getTurnos()) {
+            if (t.getNumeroRonda() != rondaActual) {
+                rondaActual = t.getNumeroRonda();
+                System.out.println();
+                System.out.println(" RONDA " + rondaActual);
+            }
+            String resultado = switch (t.getGanador()) {
+                case JUGADOR -> luchador + " acierta (-" + t.getDamage() + ")";
+                case CPU -> rival + " acierta (-" + t.getDamage() + ")";
+                case EMPATE -> "ataques chocan (-" + t.getDamage() + " a cada uno)";
+            };
+            System.out.println("   T" + t.getNumeroTurno() + ": " + t.getMovimientoJugador()
+                    + " vs " + t.getMovimientoCpu() + "  ->  " + resultado);
+        }
+    }
+
+    /** Busca el nombre de un jugador por su id */
+    private String nombreJugador(int id, List<Jugador> jugadores) {
+        for (Jugador j : jugadores) {
+            if (j.getIdJugador() == id) return j.getNombre();
+        }
+        return "?";
+    }
+
+    /** Busca el nombre de un luchador por su id */
+    private String nombreLuchador(int id, List<Luchador> luchadores) {
+        for (Luchador l : luchadores) {
+            if (l.getIdLuchador() == id) return l.getNombre();
+        }
+        return "?";
+    }
+
+    /** Convierte "2026-10-03T12:40:11.123" en "2026-10-03 12:40" */
+    private String formatearFecha(String fecha) {
+        if (fecha == null) return "";
+        if (fecha.length() < 16) return fecha;
+        return fecha.replace("T", " ").substring(0, 16);
     }
 
     /** Dibuja una barra de vida de 20 posiciones, por ejemplo [##########----------] */

@@ -4,6 +4,7 @@ import model.Jugador;
 import model.Luchador;
 import model.Partida;
 import model.Turno;
+import model.Combate;
 import model.enums.Ganador;
 import model.enums.Movimiento;
 import view.ConsoleView;
@@ -42,7 +43,7 @@ import java.util.Random;
                     case 1 -> nuevoCombate();
                     case 2 -> gestionarJugadores();
                     case 3 -> gestionarLuchadores();
-                    case 4 -> view.mostrarMensaje("Historial de combates (pendiente)");
+                    case 4 -> historial();
                     case 0 -> {
                         view.mostrarMensaje("¡Hasta la próxima, guerrero!");
                         salir = true;
@@ -303,6 +304,36 @@ import java.util.Random;
         }
     }
 
+    // ==================== HISTORIAL ====================
+
+    private void historial() {
+        List<Combate> combates = combateController.obtenerCombates();
+        if (combates.isEmpty()) {
+            view.mostrarError("Todavía no hay combates en el historial. ¡Juega uno primero!");
+            return;
+        }
+
+        List<Jugador> jugadores = jugadorController.obtenerJugadores();
+        List<Luchador> luchadores = luchadorController.obtenerLuchadores();
+
+        boolean volver = false;
+        while (!volver) {
+            view.mostrarHistorial(combates, jugadores, luchadores);
+            int id = view.pedirEntero("Id del combate para ver sus turnos (0 = volver): ", 0, 9999);
+
+            if (id == 0) {
+                volver = true;
+            } else {
+                Combate combate = combateController.obtenerCombate(id);
+                if (combate == null) {
+                    view.mostrarError("No existe ningún combate con ese id.");
+                } else {
+                    view.mostrarDetalleCombate(combate, jugadores, luchadores);
+                    view.esperarEnter();
+                }
+            }
+        }
+    }
 
         /** Si el usuario no escribe nada al editar, se conserva el valor actual */
         private String valorOActual(String nuevo, String actual) {
