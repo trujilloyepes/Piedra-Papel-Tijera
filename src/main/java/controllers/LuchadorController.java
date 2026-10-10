@@ -27,10 +27,7 @@ public class LuchadorController {
     /**
      * Crea y guarda un luchador.
      */
-    public boolean crearLuchador(String nombre,
-                                 String pais,
-                                 String estilo,
-                                 String golpeEspecial) {
+    public boolean crearLuchador(String nombre, String pais) {
 
         if (nombre == null || nombre.trim().isEmpty()) {
             return false;
@@ -40,12 +37,7 @@ public class LuchadorController {
             return false;
         }
 
-        Luchador luchador = new Luchador(
-                nombre.trim(),
-                pais,
-                estilo,
-                golpeEspecial
-        );
+        Luchador luchador = new Luchador(nombre.trim(), pais);
 
         return luchadorDAO.guardarLuchador(luchador);
     }

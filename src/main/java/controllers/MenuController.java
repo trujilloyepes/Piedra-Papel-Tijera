@@ -158,10 +158,8 @@ import java.util.Random;
         private void anadirLuchador() {
             String nombre = view.pedirTexto("Nombre: ");
             String pais = view.pedirTexto("País: ");
-            String estilo = view.pedirTexto("Estilo de combate: ");
-            String golpe = view.pedirTexto("Golpe especial: ");
 
-            if (luchadorController.crearLuchador(nombre, pais, estilo, golpe)) {
+            if (luchadorController.crearLuchador(nombre, pais)) {
                 view.mostrarMensaje("Luchador añadido.");
             } else {
                 view.mostrarError("No se pudo añadir (ese nombre ya existe).");
@@ -188,8 +186,6 @@ import java.util.Random;
             view.mostrarMensaje("Pulsa Enter para dejar un campo como está.");
             String nombre = valorOActual(view.pedirTextoOpcional("Nombre [" + luchador.getNombre() + "]: "), luchador.getNombre());
             String pais = valorOActual(view.pedirTextoOpcional("País [" + luchador.getPais() + "]: "), luchador.getPais());
-            String estilo = valorOActual(view.pedirTextoOpcional("Estilo [" + luchador.getEstilo() + "]: "), luchador.getEstilo());
-            String golpe = valorOActual(view.pedirTextoOpcional("Golpe especial [" + luchador.getGolpeEspecial() + "]: "), luchador.getGolpeEspecial());
 
             Luchador otro = luchadorController.obtenerLuchadorPorNombre(nombre);
             if (otro != null && otro.getIdLuchador() != luchador.getIdLuchador()) {
@@ -199,8 +195,6 @@ import java.util.Random;
 
             luchador.setNombre(nombre);
             luchador.setPais(pais);
-            luchador.setEstilo(estilo);
-            luchador.setGolpeEspecial(golpe);
 
             if (luchadorController.actualizarLuchador(luchador)) {
                 view.mostrarMensaje("Luchador actualizado.");

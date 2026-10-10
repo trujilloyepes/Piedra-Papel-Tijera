@@ -139,6 +139,7 @@ public class ConsoleView {
     }
 
     /** Muestra la lista de luchadores */
+    /** Muestra la lista de luchadores */
     public void mostrarLuchadores(List<Luchador> luchadores) {
         System.out.println();
         if (luchadores.isEmpty()) {
@@ -146,8 +147,7 @@ public class ConsoleView {
             return;
         }
         for (Luchador l : luchadores) {
-            System.out.printf("%3d. %-10s %-16s %-14s %s%n",
-                    l.getIdLuchador(), l.getNombre(), l.getPais(), l.getEstilo(), l.getGolpeEspecial());
+            System.out.printf("%3d. %-12s %s%n", l.getIdLuchador(), l.getNombre(), l.getPais());
         }
     }
 
