@@ -14,7 +14,7 @@ import java.util.List;
 
 public class LuchadoresXML {
 
-    private final String RUTA_ARCHIVO = "luchadores.xml";
+    private final String RUTA_ARCHIVO = "data/luchadores.xml";
 
     @XmlRootElement(name = "luchadores")
     private static class Wrapper {
@@ -50,7 +50,11 @@ public class LuchadoresXML {
             Wrapper wrapper = new Wrapper();
             wrapper.setLista(luchadores);
 
-            marshaller.marshal(wrapper, new File(RUTA_ARCHIVO));
+            File file = new File(RUTA_ARCHIVO);
+            if (file.getParentFile() != null) {
+                file.getParentFile().mkdirs();   // crea data/ si no existe
+            }
+            marshaller.marshal(wrapper, file);
             return true;
         } catch (JAXBException e) {
             e.printStackTrace();

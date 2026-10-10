@@ -14,7 +14,7 @@ import java.util.List;
 
 public class CombatesXML {
 
-    private final String RUTA_ARCHIVO = "combates.xml";
+    private final String RUTA_ARCHIVO = "data/combates.xml";
 
     // Clase contenedora interna necesaria para JAXB
     @XmlRootElement(name = "combates")
@@ -57,7 +57,11 @@ public class CombatesXML {
             Wrapper wrapper = new Wrapper();
             wrapper.setLista(combates);
 
-            marshaller.marshal(wrapper, new File(RUTA_ARCHIVO));
+            File file = new File(RUTA_ARCHIVO);
+            if (file.getParentFile() != null) {
+                file.getParentFile().mkdirs();   // crea data/ si no existe
+            }
+            marshaller.marshal(wrapper, file);
             return true;
         } catch (JAXBException e) {
             e.printStackTrace();
