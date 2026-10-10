@@ -126,29 +126,41 @@ public class ConsoleView {
         return pedirEntero("Opción: ", 0, 4);
     }
 
-    /** Muestra la lista de jugadores */
+    /** Muestra la lista de jugadores en forma de tabla */
     public void mostrarJugadores(List<Jugador> jugadores) {
         System.out.println();
         if (jugadores.isEmpty()) {
             System.out.println("No hay jugadores registrados.");
             return;
         }
+        String linea = "+-----+--------------------+";
+        System.out.println(linea);
+        System.out.println("| " + rellenar("ID", 3) + " | " + rellenar("NOMBRE", 18) + " |");
+        System.out.println(linea);
         for (Jugador j : jugadores) {
-            System.out.printf("%3d. %s%n", j.getIdJugador(), j.getNombre());
+            System.out.println("| " + rellenar(String.valueOf(j.getIdJugador()), 3)
+                    + " | " + rellenar(j.getNombre(), 18) + " |");
         }
+        System.out.println(linea);
     }
 
-    /** Muestra la lista de luchadores */
-    /** Muestra la lista de luchadores */
+    /** Muestra la lista de luchadores en forma de tabla */
     public void mostrarLuchadores(List<Luchador> luchadores) {
         System.out.println();
         if (luchadores.isEmpty()) {
             System.out.println("No hay luchadores registrados.");
             return;
         }
+        String linea = "+-----+----------------+------------------+";
+        System.out.println(linea);
+        System.out.println("| " + rellenar("ID", 3) + " | " + rellenar("NOMBRE", 14) + " | " + rellenar("PAÍS", 16) + " |");
+        System.out.println(linea);
         for (Luchador l : luchadores) {
-            System.out.printf("%3d. %-12s %s%n", l.getIdLuchador(), l.getNombre(), l.getPais());
+            System.out.println("| " + rellenar(String.valueOf(l.getIdLuchador()), 3)
+                    + " | " + rellenar(l.getNombre(), 14)
+                    + " | " + rellenar(l.getPais(), 16) + " |");
         }
+        System.out.println(linea);
     }
 
     /**
@@ -259,5 +271,14 @@ public class ConsoleView {
             sb.append(i < llenos ? '#' : '-');
         }
         return sb.append("]").toString();
+    }
+
+    /** Añade espacios al final del texto hasta que ocupe el ancho indicado */
+    private String rellenar(String texto, int ancho) {
+        String resultado = texto;
+        while (resultado.length() < ancho) {
+            resultado = resultado + " ";
+        }
+        return resultado;
     }
 }
