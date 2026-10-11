@@ -116,16 +116,4 @@ public class JugadorDAO {
     public boolean existeJugador(int idJugador) {
         return obtenerPorId(idJugador) != null;
     }
-
-    /**
-     * Añade un logro a un jugador y guarda directamente los cambios.
-     */
-    public boolean desbloquearLogro(int idJugador, int idLogro) {
-        Jugador jugador = obtenerPorId(idJugador);
-        if (jugador != null) {
-            jugador.addLogro(idLogro);
-            return actualizarJugador(jugador);
-        }
-        return false;
-    }
 }
