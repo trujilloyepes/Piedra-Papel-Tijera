@@ -51,7 +51,7 @@ public class XMLManager {
         T result = t;
         File file = new File(fileName);
 
-        if (file.exists()) {
+        if (file.exists() && file.length() > 0) {
             try {
                 JAXBContext context = JAXBContext.newInstance(t.getClass());
                 Unmarshaller unmarshaller = context.createUnmarshaller();
