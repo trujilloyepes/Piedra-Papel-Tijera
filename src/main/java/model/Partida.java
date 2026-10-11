@@ -32,7 +32,6 @@ public class Partida {
     private boolean jugadorRecibioDamage = false;
     private boolean cpuRecibioDamage = false;
     private boolean ultimaRondaPerfect = false;
-    private boolean perfectConseguido = false;
 
     public Partida(Luchador luchadorJugador, Luchador luchadorCpu) {
         this.luchadorJugador = luchadorJugador;
@@ -93,9 +92,6 @@ public class Partida {
             ganador = Ganador.JUGADOR;
             this.rondasJugador++;
             this.ultimaRondaPerfect = !this.jugadorRecibioDamage;
-            if (this.ultimaRondaPerfect) {
-                this.perfectConseguido = true;
-            }
         } else {
             ganador = Ganador.CPU;
             this.rondasCpu++;
@@ -140,6 +136,4 @@ public class Partida {
     public int getRondaActual() { return this.rondaActual; }
 
     public boolean isUltimaRondaPerfect() { return this.ultimaRondaPerfect; }
-
-    public boolean isPerfectConseguido() { return this.perfectConseguido; }
 }

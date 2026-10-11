@@ -1,9 +1,7 @@
 package controllers;
 
 import DAO.JugadorDAO;
-import DAO.LogroDAO;
 import dataAccess.contenedores.JugadoresXML;
-import dataAccess.contenedores.LogrosXML;
 import model.Jugador;
 
 import java.util.List;
@@ -11,7 +9,6 @@ import java.util.List;
 public class JugadorController {
 
     private final JugadorDAO jugadorDAO;
-    private final LogroDAO logroDAO;
 
     /**
      * Constructor por defecto.
@@ -19,15 +16,13 @@ public class JugadorController {
      */
     public JugadorController() {
         this.jugadorDAO = new JugadorDAO(new JugadoresXML());
-        this.logroDAO = new LogroDAO(new LogrosXML());
     }
 
     /**
      * Constructor para poder inyectar los DAO.
      */
-    public JugadorController(JugadorDAO jugadorDAO, LogroDAO logroDAO) {
+    public JugadorController(JugadorDAO jugadorDAO) {
         this.jugadorDAO = jugadorDAO;
-        this.logroDAO = logroDAO;
     }
 
     /**
@@ -104,22 +99,4 @@ public class JugadorController {
     public boolean existeJugador(int idJugador) {
         return jugadorDAO.existeJugador(idJugador);
     }
-
-    /**
-     * Desbloquea un logro para un jugador.
-     *
-     * Primero se comprueba que tanto el jugador como el logro existan.
-     */
-    public boolean desbloquearLogro(int idJugador, int idLogro) {
-        if (!jugadorDAO.existeJugador(idJugador)) {
-            return false;
-        }
-
-        if (!logroDAO.existeLogro(idLogro)) {
-            return false;
-        }
-
-        return jugadorDAO.desbloquearLogro(idJugador, idLogro);
-    }
 }
-

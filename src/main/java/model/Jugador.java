@@ -10,10 +10,6 @@ public class Jugador{
     private int idJugador;
     private String nombre;
 
-    @XmlElementWrapper(name = "logros")
-    @XmlElement(name = "idLogro")
-    private List<Integer> idsLogros = new ArrayList<Integer>();
-
     public Jugador() {} // Constructor vacío para JAXB
 
     public Jugador(int idJugador, String nombre) {
@@ -43,32 +39,6 @@ public class Jugador{
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    /**
-     * Comprueba si el jugador ya tiene desbloqueado ese logro
-     * @param idLogro ID del logro
-     */
-    public boolean tieneLogro (int idLogro){
-        return this.idsLogros.contains(idLogro);
-    }
-
-    /**
-     * Añade un logro al jugador, si ya lo tenía, no hace nada
-     * @param idLogro ID del logro
-     */
-    public void addLogro (int idLogro){
-        if (!tieneLogro(idLogro)){
-            this.idsLogros.add(idLogro);
-        }
-    }
-
-    /**
-     * Quita un logro al jugador
-     * @param idLogro ID del logro
-     */
-    public void removeLogro (int idLogro){
-        this.idsLogros.remove(idLogro);
     }
 
     @Override
