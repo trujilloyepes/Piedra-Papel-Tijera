@@ -8,7 +8,10 @@ import model.Combate;
 import model.enums.Ganador;
 import model.enums.Movimiento;
 import view.ConsoleView;
+import model.RankingJugador;
+import model.enums.ResultadoCombate;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -44,6 +47,7 @@ import java.util.Random;
                     case 2 -> gestionarJugadores();
                     case 3 -> gestionarLuchadores();
                     case 4 -> historial();
+                    case 5 -> ranking();
                     case 0 -> {
                         view.mostrarMensaje("¡Hasta la próxima, guerrero!");
                         salir = true;
@@ -333,6 +337,38 @@ import java.util.Random;
                 }
             }
         }
+    }
+
+    // ==================== RANKING ====================
+
+    private void ranking() {
+        List<Jugador> jugadores = jugadorController.obtenerJugadores();
+        List<Combate> combates = combateController.obtenerCombates();
+
+        // Para cada jugador cuenta sus combates y sus victorias, y descarta a los que no han jugado
+        List<RankingJugador> ranking = jugadores.stream()
+                .map(j -> {
+                    int total = (int) combates.stream()
+                            .filter(c -> c.getIdJugador() == j.getIdJugador())
+                            .count();
+                    int victorias = (int) combates.stream()
+                            .filter(c -> c.getIdJugador() == j.getIdJugador()
+                                    && c.getResultado() == ResultadoCombate.VICTORIA)
+                            .count();
+                    return new RankingJugador(j.getNombre(), total, victorias);
+                })
+                .filter(r -> r.getCombates() > 0)
+                .sorted(Comparator.comparingInt(RankingJugador::getVictorias).reversed()
+                        .thenComparing(RankingJugador::getNombre))
+                .toList();
+
+        if (ranking.isEmpty()) {
+            view.mostrarError("Todavía no hay combates. ¡Juega alguno para aparecer en el ranking!");
+            return;
+        }
+
+        view.mostrarRanking(ranking);
+        view.esperarEnter();
     }
 
         /** Si el usuario no escribe nada al editar, se conserva el valor actual */

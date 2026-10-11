@@ -7,6 +7,7 @@ import model.Turno;
 import model.Combate;
 import model.enums.Ganador;
 import model.enums.Movimiento;
+import model.RankingJugador;
 
 import java.util.List;
 import java.util.Scanner;
@@ -46,8 +47,9 @@ public class ConsoleView {
         System.out.println("2. Gestionar jugadores");
         System.out.println("3. Gestionar luchadores");
         System.out.println("4. Historial de combates");
+        System.out.println("5. Ranking de jugadores");
         System.out.println("0. Salir");
-        return pedirEntero("Opción: ", 0, 4);
+        return pedirEntero("Opción: ", 0, 5);
     }
 
 
@@ -359,6 +361,32 @@ public class ConsoleView {
             if (l.getIdLuchador() == id) return l.getNombre();
         }
         return "?";
+    }
+
+    // ---------- Ranking ----------
+
+    /** Muestra el ranking de jugadores en forma de tabla (la lista ya viene ordenada) */
+    public void mostrarRanking(List<RankingJugador> ranking) {
+        String linea = "+--------+----------------+----------+-----------+----------+---------+";
+
+        System.out.println();
+        System.out.println("RANKING DE JUGADORES");
+        System.out.println(linea);
+        System.out.println("| " + rellenar("PUESTO", 6) + " | " + rellenar("JUGADOR", 14)
+                + " | " + rellenar("COMBATES", 8) + " | " + rellenar("VICTORIAS", 9)
+                + " | " + rellenar("DERROTAS", 8) + " | " + rellenar("% VICT.", 7) + " |");
+        System.out.println(linea);
+
+        for (int i = 0; i < ranking.size(); i++) {
+            RankingJugador r = ranking.get(i);
+            System.out.println("| " + rellenar(String.valueOf(i + 1), 6)
+                    + " | " + rellenar(r.getNombre(), 14)
+                    + " | " + rellenar(String.valueOf(r.getCombates()), 8)
+                    + " | " + rellenar(String.valueOf(r.getVictorias()), 9)
+                    + " | " + rellenar(String.valueOf(r.getDerrotas()), 8)
+                    + " | " + rellenar(Math.round(r.getPorcentaje()) + " %", 7) + " |");
+        }
+        System.out.println(linea);
     }
 
     /** Convierte "2026-10-03T12:40:11.123" en "2026-10-03 12:40" */
